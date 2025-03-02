@@ -1,6 +1,6 @@
 import 'package:crudtutorial/utils/shared_pref_utils.dart';
 import 'package:crudtutorial/widgets/drawer_list_tile.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 
 class Navigation extends StatefulWidget {
   const Navigation({super.key});
@@ -13,7 +13,7 @@ class _NavigationState extends State<Navigation> {
   void _clearSharedPreferences() {
     setState(() {
       SharedPrefUtils.clearAll();
-    });
+    }); 
   }
 
   @override

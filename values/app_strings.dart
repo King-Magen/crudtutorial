@@ -16,8 +16,8 @@ class AppStrings {
   static const String forgotPassword = 'Forgot Password?';
   static const String orLoginWith = 'or Login with';
 
-  static const String idnumber = 'Id Number';
-  static const String pleaseEnterIdNumber = 'Please, Enter IdNumber';
+  static const String idnumber = 'ID Number';
+  static const String pleaseEnterIdNumber = 'Please, Enter ID Number';
   static const String invalidIdNumber = 'Invalid Id Number';
 
   static const String permission = 'Permission';

@@ -32,5 +32,7 @@ class SharedPrefUtils {
   /// Clear all SharedPreferences
   static Future<void> clearAll() async {
     await _prefs?.clear();
+    await _prefs?.remove('token');
+    await _prefs?.remove('data');
   }
 }

@@ -31,7 +31,7 @@ class AppTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
@@ -46,7 +46,7 @@ class AppTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: suffixIcon,
           labelText: labelText,
-          floatingLabelBehavior: FloatingLabelBehavior.always,
+          // floatingLabelBehavior: FloatingLabelBehavior.always,
         ),
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         style: const TextStyle(
