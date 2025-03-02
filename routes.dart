@@ -1,13 +1,18 @@
-import 'package:crudtutorial/screens/home_screen.dart';
+import 'package:crudtutorial/screens/register_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'utils/common_widgets/invalid_route.dart';
+import 'widgets/main.dart';
+import 'widgets/invalid_route.dart';
 import 'values/app_routes.dart';
+import 'package:crudtutorial/utils/shared_pref_utils.dart'; 
 
 class Routes {
-  const Routes._();
+  const Routes._();   
+
+  static Future<bool> _isUserAuthenticated() async {
+    String? token = SharedPrefUtils.getString('token'); 
+    return token != null && token.isNotEmpty;
+  }
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     Route<dynamic> getRoute({required Widget widget, bool fullscreenDialog = false,}) {
@@ -20,13 +25,58 @@ class Routes {
 
     switch (settings.name) {
       case AppRoutes.login:
-        return getRoute(widget: const LoginPage());
+        return MaterialPageRoute<void>(
+          builder: (context) => FutureBuilder<bool>(
+            future: _isUserAuthenticated(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              }
 
-      case AppRoutes.register:
-        return getRoute(widget: const RegisterPage());
-      
+              if (snapshot.hasData && snapshot.data == true) {
+                return const MainScreen(); // ✅ Allow access if authenticated
+              } else {
+                return const LoginPage(); // ❌ Redirect to login if not authenticated
+              }
+            },
+          ),
+        );
+
+      case AppRoutes.register: 
+        return MaterialPageRoute<void>(
+          builder: (context) => FutureBuilder<bool>(
+            future: _isUserAuthenticated(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              }
+
+              if (snapshot.hasData && snapshot.data == true) {
+                return const MainScreen(); // ✅ Allow access if authenticated
+              } else {
+                return const RegisterPage(); // ❌ Redirect to register if not authenticated
+              }
+            },
+          ),
+        );
+        
       case AppRoutes.homeScreen:
-        return getRoute(widget: const HomePage());
+        return MaterialPageRoute<void>(
+          builder: (context) => FutureBuilder<bool>(
+            future: _isUserAuthenticated(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              }
+
+              if (snapshot.hasData && snapshot.data == true) {
+                return const MainScreen(); // ✅ Allow access if authenticated
+              } else {
+                return const LoginPage(); // ❌ Redirect to login if not authenticated
+              }
+            },
+          ),
+        );
         
       /// An invalid route. User shouldn't see this,
       /// it's for debugging purpose only.

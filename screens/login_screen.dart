@@ -1,15 +1,12 @@
+import 'dart:convert'; 
 import 'package:crudtutorial/api/users.dart';
 import 'package:crudtutorial/values/app_colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:crudtutorial/utils/helpers/snackbar_helper.dart';
-import 'package:crudtutorial/values/app_regex.dart';
-
-import '../components/app_text_form_field.dart';
-import '../resources/resources.dart';
-import '../utils/common_widgets/gradient_background.dart';
-import '../utils/helpers/navigation_helper.dart';
-import '../values/app_constants.dart';
+import 'package:flutter/material.dart'; 
+import 'package:crudtutorial/utils/snackbar_helper.dart'; 
+import 'package:crudtutorial/utils/shared_pref_utils.dart'; 
+import '../components/app_text_form_field.dart'; 
+import '../widgets/gradient_background.dart';
+import '../utils/navigation_helper.dart'; 
 import '../values/app_routes.dart';
 import '../values/app_strings.dart';
 import '../values/app_theme.dart';
@@ -29,7 +26,8 @@ class _LoginPageState extends State<LoginPage> {
 
   late final TextEditingController idnumberController;
   late final TextEditingController passwordController;
-  bool isLoading = false;
+  bool isLoading = false; 
+  // if using logout sharedPreferences!.remove('token');
 
   login() async {
     setState(() => isLoading = true);
@@ -37,11 +35,14 @@ class _LoginPageState extends State<LoginPage> {
     var response = await ApiService.loginUser(
         int.parse(idnumberController.text), passwordController.text);
     setState(() => isLoading = false);
-
-    print(response);
-    if (response['status_code'] == 201) {
+    
+    if (response['status_code'] == 201) {   
+      var data = jsonEncode(response['data']);
+      await SharedPrefUtils.setString('token', response['token']);
+      await SharedPrefUtils.setString('data', data);
       SnackbarHelper.showSnackBar(response['message'],
           backgroundColor: AppColors.successResponse);
+ 
       NavigationHelper.pushReplacementNamed(AppRoutes.homeScreen);
     } else {
       SnackbarHelper.showSnackBar(response['message'],
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     initializeControllers();
-    super.initState();
+    super.initState(); 
   }
 
   @override

@@ -1,11 +1,11 @@
 import 'package:crudtutorial/api/users.dart';
 import 'package:crudtutorial/values/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:crudtutorial/utils/helpers/snackbar_helper.dart';
+import 'package:crudtutorial/utils/snackbar_helper.dart';
 
 import '../components/app_text_form_field.dart';
-import '../utils/common_widgets/gradient_background.dart';
-import '../utils/helpers/navigation_helper.dart';
+import '../widgets/gradient_background.dart';
+import '../utils/navigation_helper.dart';
 import '../values/app_constants.dart';
 import '../values/app_regex.dart';
 import '../values/app_routes.dart';
@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => isLoading = true);
     fieldValidNotifier.value = false;
 
-    var response = await ApiService.registerUser(
+    var response = await ApiService.createUser(
         int.parse(idnumberController.text),
         passwordController.text,
         permissionController.text,

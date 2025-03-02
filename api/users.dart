@@ -3,7 +3,7 @@ import 'package:crudtutorial/values/app_constants.dart';
 import 'dart:convert';
 
 class ApiService {
-  static Future<Map<String, dynamic>> registerUser(
+  static Future<Map<String, dynamic>> createUser(
       int idnumber,
       String password,
       String permission,
@@ -49,15 +49,14 @@ class ApiService {
     }
   }
 
-  static Future<Map<String, dynamic>> getAllUsers() async {
-    final response = await http.get(Uri.parse(AppConstants.usersUrl));
-    if (response.statusCode == 200) {
-      // final List<dynamic> usersJson = jsonDecode(response.body)['data'];
-    } else {
-      throw Exception(
-          "Failed to load users. Status Code: ${response.statusCode}");
-    }
+  static Future<List<Map<String, dynamic>>> getAllUsers() async {
+    try {
+      final response = await http.get(Uri.parse(AppConstants.usersUrl));
 
-    return jsonDecode(response.body);
+      final List<dynamic> data = jsonDecode(response.body); 
+      return List<Map<String, dynamic>>.from(data);
+    } catch (e) {
+      throw Exception("Failed to load user data: $e");
+    }
   }
 }
